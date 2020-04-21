@@ -1,0 +1,41 @@
+<html>
+
+    <meta charset="utf-8"/>
+
+    <script>
+    let computerPlay = function(){
+        let options = ["rock","paper","scissors"];
+        return options[Math.floor(Math.random()*3)];
+    }
+
+    let playRound = function(userin, computerin){
+        let options = ["rock","paper","scissors"];
+        let userKey = options.indexOf(userin.toLowerCase());
+        let computerKey = options.indexOf(computerin);
+        if(userKey < 0){
+            return "Invalid input";
+        }
+        else if(userKey == computerKey){
+            return "It's a Tie!"
+        }
+        else if((userKey == 1 && computerKey == 2)||(userKey == 2 && computerKey == 0)||(userKey == 0 && computerKey == 1)){
+            return "You Lose! " + computerin.charAt(0).toUpperCase() + computerin.slice(1) + "(computer) beats " + userin.charAt(0).toUpperCase() + userin.slice(1) + "(user)";
+        }
+        else{
+            return "You Win! " + userin.charAt(0).toUpperCase() + userin.slice(1) + "(user) beats " + computerin.charAt(0).toUpperCase() + computerin.slice(1)+ "(computer)";
+        }
+    }
+
+    let game = function(){
+        let userInput = prompt("Choose 'rock', 'paper' or 'scissors'");
+        console.log(playRound(userInput,computerPlay()));
+    }
+
+    for (let index = 0; index < 5 ;index++) {
+        game();   
+    };
+    
+
+</script>
+
+</html>
