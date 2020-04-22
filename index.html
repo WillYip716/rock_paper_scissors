@@ -2,39 +2,71 @@
 
     <meta charset="utf-8"/>
 
+    <button id="RockButton" onclick="playRound('rock')">Rock</button>
+    <button id="PapButton" onclick="playRound('paper')">Paper</button>
+    <button id="SciButton" onclick="playRound('scissors')">Scissors</button>
+    <br>
+    <div id="playerscore" style="display: inline-block;margin-right: 30px;margin-top: 30px;">Player: 0</div>
+    <div id="compscore" style="display: inline-block;margin-right: 30px;margin-top: 30px;">Computer: 0</div>
+    <br>
+    <div id="results" style="margin-top: 50px;"></div>
+   
+    
+
     <script>
     let computerPlay = function(){
         let options = ["rock","paper","scissors"];
         return options[Math.floor(Math.random()*3)];
     }
 
-    let playRound = function(userin, computerin){
+    let updateScore = function(v){
+        let holder, regexResult;
+        let regex = /(.*\s)(\d*)$/;
+        if(v === "User"){
+            holder = document.querySelector("#playerscore");
+        }
+        else{
+            holder = document.querySelector("#compscore");
+        }
+        regexResult = holder.innerHTML.match(regex);
+        holder.innerHTML = regexResult[1] + (parseInt(regexResult[2]) + 1);
+        if(parseInt(regexResult[2]) + 1 === 5){
+            document.querySelector("#results").innerHTML = document.querySelector("#results").innerHTML + "<br><br><br>" + "The winner is the " + v;
+        }
+    }
+
+    let checkReset = function(v){
+        let regex = /(.*\s)(\d*)$/;
+        let holderU = document.querySelector("#playerscore");
+        let holderC = document.querySelector("#compscore");
+        if(parseInt(holderU.innerHTML.match(regex)[2])===5 || parseInt(holderC.innerHTML.match(regex)[2])===5){
+            holderU.innerHTML = "Player: 0";
+            holderC.innerHTML = "Computer: 0";
+        }
+    }
+
+    let playRound = function(userin){
+        checkReset();
+        let computerin = computerPlay();
         let options = ["rock","paper","scissors"];
         let userKey = options.indexOf(userin.toLowerCase());
         let computerKey = options.indexOf(computerin);
+        let holder = document.querySelector("#results");
         if(userKey < 0){
-            return "Invalid input";
+            holder.innerHTML = "Invalid input";
         }
         else if(userKey == computerKey){
-            return "It's a Tie!"
+            holder.innerHTML = "It's a Tie!"
         }
         else if((userKey == 1 && computerKey == 2)||(userKey == 2 && computerKey == 0)||(userKey == 0 && computerKey == 1)){
-            return "You Lose! " + computerin.charAt(0).toUpperCase() + computerin.slice(1) + "(computer) beats " + userin.charAt(0).toUpperCase() + userin.slice(1) + "(user)";
+            holder.innerHTML = "You Lose! " + computerin.charAt(0).toUpperCase() + computerin.slice(1) + "(computer) beats " + userin.charAt(0).toUpperCase() + userin.slice(1) + "(user)";
+            updateScore("Computer");
         }
         else{
-            return "You Win! " + userin.charAt(0).toUpperCase() + userin.slice(1) + "(user) beats " + computerin.charAt(0).toUpperCase() + computerin.slice(1)+ "(computer)";
+            holder.innerHTML = "You Win! " + userin.charAt(0).toUpperCase() + userin.slice(1) + "(user) beats " + computerin.charAt(0).toUpperCase() + computerin.slice(1)+ "(computer)";
+            updateScore("User");
         }
     }
-
-    let game = function(){
-        let userInput = prompt("Choose 'rock', 'paper' or 'scissors'");
-        console.log(playRound(userInput,computerPlay()));
-    }
-
-    for (let index = 0; index < 5 ;index++) {
-        game();   
-    };
-    
 
 </script>
 
